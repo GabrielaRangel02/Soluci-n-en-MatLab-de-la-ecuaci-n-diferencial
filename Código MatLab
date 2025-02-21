@@ -1,0 +1,40 @@
+clc; clear; close all;
+
+% Definir la ecuación diferencial usando un sistema de ecuaciones de primer orden
+syms y(t) 
+
+% Definir los coeficientes constantes 
+a2 = 1
+a1 = 3
+a0 = 2
+
+% Definir la ecuación diferencial
+Dy = diff(y, t);  % Primera derivada
+D2y = diff(y, t, 2); % Segunda derivada
+eqn = a2*D2y + a1*Dy + a0*y == 2;
+
+% Condiciones iniciales
+cond1 = y(0) == 0;
+cond2 = subs(Dy, t, 0) == 0;
+conds = [cond1, cond2];
+
+% Resolver la ecuación diferencial
+ySol = dsolve(eqn, conds);
+
+% Convertir la solución simbólica en una función numérica
+ySolFunc = matlabFunction(ySol);
+
+% Definir el rango de tiempo para la gráfica
+tVals = linspace(0, 10, 100); % De 0 a 10 segundos
+
+% Evaluar la solución en los puntos de tiempo
+yVals = ySolFunc(tVals);
+
+% Graficar la solución
+figure;
+plot(tVals, yVals, 'b', 'LineWidth', 2);
+grid on;
+xlabel('Tiempo t');
+ylabel('Solución y(t)');
+title('Solución de la Ecuación Diferencial de Segundo Orden');
+legend('y(t)', 'Location', 'Best');
